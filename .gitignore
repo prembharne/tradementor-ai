@@ -1,0 +1,32 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+*.db
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+coverage/
+*.tsbuildinfo
+
+# Logs and local machine files
+logs/
+*.log
+*.local
+.DS_Store
+Thumbs.db
+
+# Local assistant/tooling state
+.agents/
+.claude/settings.local.json
