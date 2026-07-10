@@ -1,10 +1,12 @@
 # TradeMentor AI — Progress Log
 
 ## Current phase
-Phase 1 — Scaffolding
+Phase 1 — Scaffolding (baseline being committed)
 
 ## State for next session
-Repository tracking is initialized with root ignore rules; next loop should create or repair the frontend scaffold without committing broken code.
+Phase 1 scaffold (frontend + backend) now exists on disk and is committed as the baseline,
+along with ARCHITECTURE.md; next loop should add CI (GitHub Actions) and a README skeleton,
+then move into wiring the frontend to the backend.
 
 ## Acceptance checklist
 ### Production MVP
@@ -31,7 +33,8 @@ Repository tracking is initialized with root ignore rules; next loop should crea
 
 ### Demo & Review
 - [ ] Live demo video covering full functionality
-- [ ] Repo/README ready for review against: technical complexity, product quality, architecture quality, real-world usefulness
+- [ ] Repo/README ready for review against: technical complexity, product quality,
+      architecture quality, real-world usefulness
 
 ### Submission checklist (final artifacts)
 - [ ] Public GitHub repo
@@ -45,21 +48,28 @@ Repository tracking is initialized with root ignore rules; next loop should crea
 - [ ] Basic user feedback summary
 
 ## Task queue (next up, top = next)
-- [x] Initialize git repository
-- [ ] Create frontend scaffold (Vite + React + TypeScript + Tailwind CSS)
-- [ ] Create backend scaffold (FastAPI + Python)
-- [ ] Create CI skeleton (GitHub Actions)
-- [ ] Create .env.example
-- [ ] Create ARCHITECTURE.md
+- [ ] Add CI skeleton (GitHub Actions: frontend lint/typecheck/build + backend lint/import)
 - [ ] Create README.md skeleton
-- [ ] Implement Freighter wallet connect flow (frontend only)
-- [ ] Configure Tailwind CSS with mobile-first responsive design
-- [ ] Set up basic project structure (frontend/src, backend/app, contracts/)
+- [ ] Wire frontend → backend (replace localStorage state with API client)
+- [ ] Use AIService in `/ai` endpoints (replace hardcoded scores)
+- [ ] Persist strategies/trades/challenges/reputation in backend (Phase 3)
+- [ ] Create Soroban contracts (strategy versioning, challenge validation, reputation)
+- [ ] Deploy contracts to Stellar testnet, record addresses in contracts/DEPLOYMENTS.md
+- [ ] Add challenge-evaluation job → Soroban submission → real-time dashboard update
+- [ ] Production deploy + monitoring/analytics + screenshots + demo video + 10 users
 
 ## Backlog (discovered but not yet scheduled)
-- Existing scaffold has known build blockers; repair before committing app source.
+- frontend/backend are disconnected (frontend is localStorage-only, zero HTTP calls)
+- backend endpoints ai/trades/strategies/challenges/reputation return hardcoded mock data
+- AIService (OpenRouter) is implemented but not imported by any endpoint
+- no contracts/ dir; Soroban contract addresses are None in config
+- verify-wallet has no nonce/timestamp → signature replayable; generate_auth_message unused
+- no tests anywhere; alembic listed in requirements but no migrations/ or alembic.ini
+- tradementor.db committed? (gitignored via *.db — confirm not tracked)
+- demo wallet fallback in WalletContext should be gated to non-production
 
 ## Commit log (append, don't rewrite)
 | Commit | Summary |
 |---|---|
 | current commit | chore(repo): initialize repository tracking |
+| <this commit> | feat(scaffold): commit Phase 1 frontend+backend baseline and add ARCHITECTURE.md |
