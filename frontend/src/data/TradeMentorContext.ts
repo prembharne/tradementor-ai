@@ -1,4 +1,4 @@
-﻿import { createContext } from "react";
+import { createContext } from "react";
 import type {
   ChallengeProgress,
   MetricSet,
@@ -10,11 +10,15 @@ import type {
 
 export interface TradeMentorContextType {
   state: TradeMentorState;
+  loading: boolean;
+  error: string | null;
   metrics: MetricSet;
   challenges: ChallengeProgress[];
   weeklyReport: WeeklyReport;
-  addStrategy: (input: StrategyInput) => void;
-  addTrade: (input: TradeInput) => void;
+  addStrategy: (input: StrategyInput) => Promise<void>;
+  addTrade: (input: TradeInput) => Promise<void>;
+  refreshStrategies: () => Promise<void>;
+  refreshTrades: () => Promise<void>;
   resetDemo: () => void;
   clearWorkspace: () => void;
 }
