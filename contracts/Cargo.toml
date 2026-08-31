@@ -1,0 +1,20 @@
+[workspace]
+members = [
+    "strategy",
+    "challenge",
+    "reputation"
+]
+resolver = "2"
+
+[workspace.dependencies]
+soroban-sdk = { version = "20.0.0" }
+tokio = { version = "1.40", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+overflow-checks = true
