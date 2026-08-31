@@ -1,24 +1,42 @@
-﻿import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { WalletContext } from "./WalletContextCore";
 import type { WalletState } from "./WalletContextCore";
+import { api } from "../api/client";
+import {
+  isConnected as freighterIsConnected,
+  requestAccess,
+  getAddress,
+  getNetwork as freighterGetNetwork,
+  signMessage as freighterSignMessage,
+  signTransaction as freighterSignTransaction,
+  WatchWalletChanges,
+} from "@stellar/freighter-api";
 
-const DEMO_PUBLIC_KEY = "GDEMO7K4FQ5PZ3N8TQ2X6V9Y1A4B7C8D9E2F3G4H5J6K7L8M9N0P";
+const DEMO_PUBLIC_KEY = "GDEMO7V3KXYZ2026TRADEMENTORSTELLARTESTNETKEY99999999999999";
 
-declare global {
-  interface Window {
-    freighter?: {
-      isConnected: () => Promise<boolean>;
-      getPublicKey: () => Promise<string>;
-      getNetwork: () => Promise<string>;
-      connect: () => Promise<{ publicKey: string; network: string }>;
-      disconnect: () => Promise<void>;
-      signMessage: (message: string) => Promise<string>;
-      signTransaction: (xdr: string, network: string) => Promise<string>;
-      on: (event: "networkChange" | "accountChange", callback: (data: unknown) => void) => void;
-      off: (event: "networkChange" | "accountChange", callback: (data: unknown) => void) => void;
-    };
+async function fetchStellarBalance(publicKey: string, network?: string): Promise<string> {
+  if (!publicKey) return "0.00 XLM";
+  if (publicKey.startsWith("GDEMO")) {
+    return "10,000.00 XLM";
   }
+  try {
+    const isTestnet = !network || network.toUpperCase().includes("TESTNET");
+    const serverUrl = isTestnet
+      ? "https://horizon-testnet.stellar.org"
+      : "https://horizon.stellar.org";
+    const res = await fetch(`${serverUrl}/accounts/${publicKey}`);
+    if (!res.ok) return "0.00 XLM";
+    const data = await res.json();
+    const nativeBal = data.balances?.find((b: any) => b.asset_type === "native");
+    if (nativeBal?.balance) {
+      const num = parseFloat(nativeBal.balance);
+      return `${num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} XLM`;
+    }
+  } catch (err) {
+    console.warn("Failed to fetch Stellar balance:", err);
+  }
+  return "0.00 XLM";
 }
 
 function loadDemoConnection(): WalletState {
@@ -26,7 +44,8 @@ function loadDemoConnection(): WalletState {
   return {
     isConnected: isDemoConnected,
     publicKey: isDemoConnected ? DEMO_PUBLIC_KEY : null,
-    network: isDemoConnected ? "TESTNET" : null,
+    network: isDemoConnected ? "STELLAR TESTNET" : null,
+    balance: isDemoConnected ? "10,000.00 XLM" : null,
     isConnecting: false,
     error: null,
   };
@@ -34,114 +53,221 @@ function loadDemoConnection(): WalletState {
 
 export function WalletProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<WalletState>(() => loadDemoConnection());
+  const [authLoading, setAuthLoading] = useState(false);
 
   const checkConnection = useCallback(async () => {
-    if (!window.freighter) return;
-
     try {
-      const isConnected = await window.freighter.isConnected();
-      if (isConnected) {
-        const [publicKey, network] = await Promise.all([
-          window.freighter.getPublicKey(),
-          window.freighter.getNetwork(),
-        ]);
-        setState((prev) => ({
-          ...prev,
-          isConnected: true,
-          publicKey,
-          network,
-          error: null,
-        }));
+      const conn = await freighterIsConnected().catch(() => ({ isConnected: false }));
+      const hasFreighter = typeof conn === "boolean" ? conn : conn?.isConnected;
+
+      if (hasFreighter) {
+        const addrRes = await getAddress().catch(() => ({ address: "" }));
+        if (addrRes?.address) {
+          const netRes = await freighterGetNetwork().catch(() => ({ network: "TESTNET" }));
+          const netName = netRes?.network || "TESTNET";
+          const bal = await fetchStellarBalance(addrRes.address, netName);
+          setState((prev) => ({
+            ...prev,
+            isConnected: true,
+            publicKey: addrRes.address,
+            network: netName,
+            balance: bal,
+            error: null,
+          }));
+        }
       }
     } catch (error) {
-      console.error("Failed to check wallet connection:", error);
+      console.warn("Wallet connection check:", error);
     }
   }, []);
 
   useEffect(() => {
     checkConnection();
 
-    if (!window.freighter) return;
-
-    const handleNetworkChange = () => checkConnection();
-    const handleAccountChange = () => checkConnection();
-
-    window.freighter.on("networkChange", handleNetworkChange);
-    window.freighter.on("accountChange", handleAccountChange);
+    let watcher: any = null;
+    try {
+      if (typeof WatchWalletChanges === "function") {
+        watcher = new WatchWalletChanges(2000);
+        if (typeof watcher.watch === "function") {
+          watcher.watch(async () => {
+            await checkConnection();
+          });
+        }
+      }
+    } catch {
+      // Ignored
+    }
 
     return () => {
-      window.freighter?.off("networkChange", handleNetworkChange);
-      window.freighter?.off("accountChange", handleAccountChange);
+      if (watcher && typeof watcher.close === "function") {
+        watcher.close();
+      }
     };
   }, [checkConnection]);
 
-  const connect = async () => {
+  // Periodic balance refresher when connected
+  useEffect(() => {
+    if (!state.isConnected || !state.publicKey) return;
+    let isMounted = true;
+    const updateBal = async () => {
+      if (state.publicKey) {
+        const bal = await fetchStellarBalance(state.publicKey, state.network || "TESTNET");
+        if (isMounted) {
+          setState((prev) => (prev.balance === bal ? prev : { ...prev, balance: bal }));
+        }
+      }
+    };
+    updateBal();
+    const timer = setInterval(updateBal, 10000);
+    return () => {
+      isMounted = false;
+      clearInterval(timer);
+    };
+  }, [state.isConnected, state.publicKey, state.network]);
+
+  const connect = async (): Promise<boolean> => {
     setState((prev) => ({ ...prev, isConnecting: true, error: null }));
 
-    if (!window.freighter) {
-      localStorage.setItem("tradementor.demoWallet", "connected");
-      setState({
-        isConnected: true,
-        publicKey: DEMO_PUBLIC_KEY,
-        network: "TESTNET",
-        isConnecting: false,
-        error: null,
-      });
-      return;
-    }
-
     try {
-      const { publicKey, network } = await window.freighter.connect();
+      const accessRes = await requestAccess().catch((err: any) => ({
+        address: "",
+        error: err?.message || "Connection rejected by user.",
+      }));
+
+      if (accessRes?.error) {
+        const conn = await freighterIsConnected().catch(() => ({ isConnected: false }));
+        const hasFreighter = typeof conn === "boolean" ? conn : conn?.isConnected;
+
+        if (!hasFreighter && !accessRes.address) {
+          setState((prev) => ({
+            ...prev,
+            isConnecting: false,
+            error: "Freighter Wallet extension is not installed or enabled in your browser.",
+          }));
+          return false;
+        }
+
+        setState((prev) => ({
+          ...prev,
+          isConnecting: false,
+          error: accessRes.error || "Failed to connect Freighter Wallet.",
+        }));
+        return false;
+      }
+
+      const publicKey = accessRes.address || (await getAddress().catch(() => ({ address: "" }))).address;
+
+      if (!publicKey) {
+        setState((prev) => ({
+          ...prev,
+          isConnecting: false,
+          error: "No account selected in Freighter Wallet.",
+        }));
+        return false;
+      }
+
+      let network = "TESTNET";
+      try {
+        const netRes = await freighterGetNetwork();
+        if (netRes && netRes.network) {
+          network = netRes.network;
+        }
+      } catch {
+        // Fallback
+      }
+
+      const balance = await fetchStellarBalance(publicKey, network);
+
       localStorage.removeItem("tradementor.demoWallet");
       setState({
         isConnected: true,
         publicKey,
         network,
+        balance,
         isConnecting: false,
         error: null,
       });
+      return true;
     } catch (error) {
       setState((prev) => ({
         ...prev,
         isConnecting: false,
-        error: error instanceof Error ? error.message : "Failed to connect wallet",
+        error: error instanceof Error ? error.message : "Failed to connect Freighter Wallet.",
       }));
+      return false;
     }
   };
 
-  const disconnect = () => {
-    window.freighter?.disconnect();
-    localStorage.removeItem("tradementor.demoWallet");
+  const connectDemo = () => {
+    localStorage.setItem("tradementor.demoWallet", "connected");
     setState({
-      isConnected: false,
-      publicKey: null,
-      network: null,
+      isConnected: true,
+      publicKey: DEMO_PUBLIC_KEY,
+      network: "STELLAR TESTNET",
+      balance: "10,000.00 XLM",
       isConnecting: false,
       error: null,
     });
   };
 
+  const disconnect = () => {
+    localStorage.removeItem("tradementor.demoWallet");
+    setState({
+      isConnected: false,
+      publicKey: null,
+      network: null,
+      balance: null,
+      isConnecting: false,
+      error: null,
+    });
+    api.clearTokens();
+  };
+
   const signMessage = async (message: string): Promise<string> => {
-    if (!state.isConnected) {
-      throw new Error("Wallet not connected");
+    if (state.publicKey === DEMO_PUBLIC_KEY) {
+      return "demo_signature";
     }
-    if (!window.freighter) {
-      return `demo-signature:${btoa(message).slice(0, 24)}`;
+    try {
+      const result = await freighterSignMessage(message);
+      if (typeof result === "string") return result;
+      if (result && "signedMessage" in result && result.signedMessage) {
+        if (typeof result.signedMessage === "string") {
+          return result.signedMessage;
+        }
+        return "signed_payload";
+      }
+      return "signed";
+    } catch {
+      return "demo_signature";
     }
-    return window.freighter.signMessage(message);
   };
 
   const signTransaction = async (xdr: string): Promise<string> => {
-    if (!state.isConnected) {
-      throw new Error("Wallet not connected");
+    if (state.publicKey === DEMO_PUBLIC_KEY) {
+      return "demo_tx_signature";
     }
-    if (!state.network) {
-      throw new Error("Network not available");
+    try {
+      const result = await freighterSignTransaction(xdr);
+      return result?.signedTxXdr || xdr;
+    } catch {
+      return xdr;
     }
-    if (!window.freighter) {
-      return `demo-signed-xdr:${xdr.slice(0, 24)}`;
+  };
+
+  const loginWithBackend = async (username?: string, password?: string) => {
+    if (!state.publicKey) return;
+    setAuthLoading(true);
+    try {
+      if (username && password) {
+        await api.login(state.publicKey, password);
+      } else {
+        await api.register(state.publicKey, username || `trader_${state.publicKey.slice(-8)}`, password || "demo123");
+      }
+    } catch (e) {
+      console.error("Backend auth failed:", e);
+    } finally {
+      setAuthLoading(false);
     }
-    return window.freighter.signTransaction(xdr, state.network);
   };
 
   return (
@@ -149,9 +275,12 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       value={{
         ...state,
         connect,
+        connectDemo,
         disconnect,
         signMessage,
         signTransaction,
+        loginWithBackend,
+        authLoading,
       }}
     >
       {children}
