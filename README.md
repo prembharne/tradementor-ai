@@ -83,9 +83,9 @@ Institutional-grade technical market scanner powered by multi-modal Vision AI:
 
 ---
 
-## 🔗 Proof of 13 Live Stellar Testnet Wallet Interactions
+## 🔗 Verified On-Chain User Interactions (Stellar Testnet)
 
-Below is the verified ledger table of **13 distinct real Stellar Testnet wallets** that executed transactions and Soroban contract interactions with TradeMentor AI:
+Below is the verified ledger of on-chain contract invocations and transactions executed by traders on Stellar Testnet:
 
 | # | Action / Milestone | Signer Wallet Address (Testnet) | Live Transaction Hash (Stellar Testnet) | Explorer Proof Link |
 | :- | :--- | :--- | :--- | :--- |
