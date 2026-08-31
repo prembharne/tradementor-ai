@@ -1,10 +1,10 @@
-﻿from datetime import datetime
+from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 
 
 class UserBase(BaseModel):
-    wallet_address: str = Field(..., min_length=56, max_length=56)
+    wallet_address: str = Field(..., min_length=10, max_length=64)
     username: str = Field(..., min_length=3, max_length=50)
     email: Optional[EmailStr] = None
 
