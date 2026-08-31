@@ -105,17 +105,6 @@ Below is the verified ledger of on-chain contract invocations and transactions e
 
 ---
 
-## 👥 User Feedback & Testing Summary
-
-During beta testing with active crypto & forex traders:
-- **Key Takeaway**: *"Traditional trading journals focus exclusively on P&L, encouraging bad habits when lucky trades win. TradeMentor AI forces me to focus on my rules and risk limits, and having my discipline score on Stellar makes my track record verifiable to prop firms."*
-- **Feature Ratings**:
-  - AI Trade Process Grading: ⭐⭐⭐⭐⭐ (4.9/5)
-  - Live AI Chart Vision Explainer: ⭐⭐⭐⭐⭐ (4.8/5)
-  - Soroban On-Chain Strategy & Proof Signing: ⭐⭐⭐⭐⭐ (5.0/5)
-
----
-
 ## 🛠️ Local Development & Setup
 
 ### Prerequisites
