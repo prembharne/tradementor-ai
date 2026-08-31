@@ -83,22 +83,25 @@ Institutional-grade technical market scanner powered by multi-modal Vision AI:
 
 ---
 
-## 🔗 Proof of 10+ Stellar Testnet Wallet Interactions
+## 🔗 Proof of 13 Live Stellar Testnet Wallet Interactions
 
-Below is a verified sample of on-chain contract transactions executed and anchored on Stellar Testnet:
+Below is the verified ledger table of **13 distinct real Stellar Testnet wallets** that executed transactions and Soroban contract interactions with TradeMentor AI:
 
-| # | Action / Milestone | Soroban Contract | Stellar Testnet Transaction Hash | Status |
+| # | Action / Milestone | Signer Wallet Address (Testnet) | Live Transaction Hash (Stellar Testnet) | Explorer Proof Link |
 | :- | :--- | :--- | :--- | :--- |
-| 1 | Register Strategy: London Breakout v1 | `CDGXDN...7GK` | `8f3b2049e7b2190482da7f601b3e89c25f187a4d32098b1e4c76a92d54e1f812` | ✅ Confirmed |
-| 2 | Register Strategy: ICT Silver Bullet v1 | `CDGXDN...7GK` | `4c76a92d54e1f8128f3b2049e7b2190482da7f601b3e89c25f187a4d32098b1e` | ✅ Confirmed |
-| 3 | Submit Proof: Risk Control Sprint | `CBUSWS...TTFZ` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` | ✅ Confirmed |
-| 4 | Submit Proof: Rule Adherence Streak | `CBUSWS...TTFZ` | `a1b2c3d4e5f60718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0` | ✅ Confirmed |
-| 5 | Submit Proof: Journal Clarity Quest | `CBUSWS...TTFZ` | `9876543210fedcba0987654321fedcba0123456789abcdef0123456789abcdef` | ✅ Confirmed |
-| 6 | Reputation Score Increment (+25 REP) | `CBAMVU...XR5B` | `f5e4d3c2b1a0987654321fedcba0123456789abcdef0123456789abcdef01234` | ✅ Confirmed |
-| 7 | Horizon Balance Query & Nonce Sync | Horizon Native | `d4e5f6a1b2c30718293a4b5c6d7e8f90123456789abcdef0123456789abcdef0` | ✅ Confirmed |
-| 8 | Strategy Versioning Update (v2) | `CDGXDN...7GK` | `112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00` | ✅ Confirmed |
-| 9 | Cryptographic Proof Payload Auth | `CBUSWS...TTFZ` | `5566778899aabbccddeeff00112233445566778899aabbccddeeff0011223344` | ✅ Confirmed |
-| 10 | On-Chain Reputation Snapshot Write | `CBAMVU...XR5B` | `aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899` | ✅ Confirmed |
+| 1 | Register Strategy: London Breakout v1 | [`GCOBYS...CPXQ`](https://stellar.expert/explorer/testnet/account/GCOBYSBSDC26OIX4PQBWGFK2MSUOEBTOIUL4PIF6RKRYAENQDASICPXQ) | `8e350df626cac7c75b42f25671d1184ef4be78c44dc61519edfb5aae0cd95c78` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/8e350df626cac7c75b42f25671d1184ef4be78c44dc61519edfb5aae0cd95c78) |
+| 2 | Register Strategy: ICT Silver Bullet v1 | [`GC5YZA...6XVS`](https://stellar.expert/explorer/testnet/account/GC5YZAX3OK4ELP333JOAGIZ2JOQ3Y6KB6RMB5H7WCJJI6DYO7IJB6XVS) | `13b489627f0051b8815e643bedf88dc1ca5e3419eb819d0e1fdde6f905075de3` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/13b489627f0051b8815e643bedf88dc1ca5e3419eb819d0e1fdde6f905075de3) |
+| 3 | Strategy Version Upgrade: London Breakout v2 | [`GBJTQR...Q2C3`](https://stellar.expert/explorer/testnet/account/GBJTQRRB3Q3O7LQORDLG5JSX3WMAVI7AVOJQRJI455JLX27276LOQ2C3) | `0009191aa95bcdf1c1d64de913dd0307ac1ae957d26e79f0d2bc728c866dbe87` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/0009191aa95bcdf1c1d64de913dd0307ac1ae957d26e79f0d2bc728c866dbe87) |
+| 4 | Submit Proof: Risk Control Sprint (10/10) | [`GBLN5A...EZOY`](https://stellar.expert/explorer/testnet/account/GBLN5AD3ECIRIAZCS2MRSGR6G7XZL5R4SQKWFYLDLOLIFMVR66YBEZOY) | `09008f3635479d4bbfcd2efac2a9998c0740639254effcea6776fbcbfeb49f9e` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/09008f3635479d4bbfcd2efac2a9998c0740639254effcea6776fbcbfeb49f9e) |
+| 5 | Submit Proof: Rule Adherence Streak (5/5) | [`GBE3ES...EQMV`](https://stellar.expert/explorer/testnet/account/GBE3ESYPLKHJRWC2LQSSQPFNU7H72NSNMT46NZR5XLNMRDPZZYEAEQMV) | `5531d88d8bfee13c03a9e16192f5b37f49089b0ffd0d75edc881d20c8353dd70` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/5531d88d8bfee13c03a9e16192f5b37f49089b0ffd0d75edc881d20c8353dd70) |
+| 6 | Submit Proof: Journal Clarity Quest (3/3) | [`GASFHL...GG2K`](https://stellar.expert/explorer/testnet/account/GASFHLEWXCX45LNSKDVCUP5KFFILGEVP6FHKEQBVRFEOW7FIEUHQGG2K) | `e5a0cdc45e3e386eaca1f446ec599552f8a9b97ab00402397e305751c3052530` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/e5a0cdc45e3e386eaca1f446ec599552f8a9b97ab00402397e305751c3052530) |
+| 7 | On-Chain Rep Milestone: +25 REP XP | [`GASMR3...GI3Z`](https://stellar.expert/explorer/testnet/account/GASMR32SEH7FVEAIUYTRBFJDSS7GNFJO7MCJERVM6SU4YGCBER7VGI3Z) | `68eed25b8372e0bf912fb6fa13605058b5e8f9f970ad92350651112c71c2329f` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/68eed25b8372e0bf912fb6fa13605058b5e8f9f970ad92350651112c71c2329f) |
+| 8 | On-Chain Rep Milestone: Tier 1 Discipline | [`GAK4CJ...G4Y4`](https://stellar.expert/explorer/testnet/account/GAK4CJGQQ2NNONYAB5MCGKASDR4VIWW64NXKTDU3232DPIR7D5CRG4Y4) | `3632eabe5bc5d57d73fa8774dd002c317b1864bcea21221fb42c74dc5f1b8fc4` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/3632eabe5bc5d57d73fa8774dd002c317b1864bcea21221fb42c74dc5f1b8fc4) |
+| 9 | Register Strategy: Asian Session Sweep v1 | [`GCIOKC...QXGM`](https://stellar.expert/explorer/testnet/account/GCIOKCMW523YWMSCEYFUR6PF7K3UUIYROIBQ6UEU7GTEW7MZXTGKQXGM) | `8890cedf3ba72f7ef6ae6baea5124391535d8ad3f184570d00da99c2483aaf19` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/8890cedf3ba72f7ef6ae6baea5124391535d8ad3f184570d00da99c2483aaf19) |
+| 10 | Submit Proof: Max Drawdown Defense (10/10) | [`GBZ6MO...G4I6`](https://stellar.expert/explorer/testnet/account/GBZ6MOS22GXXC4E2KD2VE3QWGAYG7R65VUNP64OVA3L5ULCRBS2OG4I6) | `0ba337270448590c4e58c9a7dea5f572de3037badfdf6d903b0ae8ba669a26ce` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/0ba337270448590c4e58c9a7dea5f572de3037badfdf6d903b0ae8ba669a26ce) |
+| 11 | On-Chain Rep Snapshot: 95 Process Score | [`GC5EAO...3GKH`](https://stellar.expert/explorer/testnet/account/GC5EAOMZPEYNQ2YKKEBUBHAHLVPHI7BHO43WORL2GLI6WA625PPE3GKH) | `44321b077416bec6d43b2c2c0d450c1a700b9cd7a997923fd7a39b9092b4f35b` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/44321b077416bec6d43b2c2c0d450c1a700b9cd7a997923fd7a39b9092b4f35b) |
+| 12 | Register Strategy: Daily FVG Reversal v1 | [`GD6EYM...6VVC`](https://stellar.expert/explorer/testnet/account/GD6EYMV4MCLMTXWUNWGVAC7Z3G36W5Q57RHHI7GLTPYFBWEOR7O26VVC) | `1e50df4dfc011d67a5dffdd89a87d22e487eb85ce6d399e20be2310cda0e602c` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/1e50df4dfc011d67a5dffdd89a87d22e487eb85ce6d399e20be2310cda0e602c) |
+| 13 | Submit Proof: Discipline Master Sprint | [`GDBZDM...IXUU`](https://stellar.expert/explorer/testnet/account/GDBZDMLCWAMLZOKM33RVC3P2FZ6XFKBRLAXX4UO26K2OWCNLX3TLIXUU) | `d8caa3d1ee619eec7a819bd66c5e3fe3c727dd263c17ae2833ea026d71da4785` | [Verify TX ↗](https://stellar.expert/explorer/testnet/tx/d8caa3d1ee619eec7a819bd66c5e3fe3c727dd263c17ae2833ea026d71da4785) |
 
 ---
 

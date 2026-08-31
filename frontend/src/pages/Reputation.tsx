@@ -35,21 +35,73 @@ export function Reputation() {
   const onChainProofs = [
     {
       id: "tx-1",
-      action: "Challenge Proof: Risk Control Sprint",
-      contract: "CBUSWS...TTFZ",
-      txHash: "8f3b2049e7b2190482da7f601b3e89c25f187a4d32098b1e4c76a92d54e1f812",
+      action: "Register Strategy: London Breakout v1",
+      contract: "CDGXDN...7GK",
+      account: "GCOBYS...CPXQ",
+      txHash: "8e350df626cac7c75b42f25671d1184ef4be78c44dc61519edfb5aae0cd95c78",
       status: "Confirmed",
-      reward: "+25 REP XP",
-      time: "Stellar Ledger #5128910"
+      reward: "+10 REP XP",
+      time: "Stellar Ledger • 12m ago"
     },
     {
       id: "tx-2",
-      action: "Strategy Registered: London Breakout v1",
+      action: "Register Strategy: ICT Silver Bullet v1",
       contract: "CDGXDN...7GK",
-      txHash: "4c76a92d54e1f8128f3b2049e7b2190482da7f601b3e89c25f187a4d32098b1e",
+      account: "GC5YZA...6XVS",
+      txHash: "13b489627f0051b8815e643bedf88dc1ca5e3419eb819d0e1fdde6f905075de3",
       status: "Confirmed",
       reward: "+10 REP XP",
-      time: "Stellar Ledger #5128840"
+      time: "Stellar Ledger • 45m ago"
+    },
+    {
+      id: "tx-3",
+      action: "Strategy Upgrade: London Breakout v2",
+      contract: "CDGXDN...7GK",
+      account: "GBJTQR...Q2C3",
+      txHash: "0009191aa95bcdf1c1d64de913dd0307ac1ae957d26e79f0d2bc728c866dbe87",
+      status: "Confirmed",
+      reward: "+15 REP XP",
+      time: "Stellar Ledger • 1h ago"
+    },
+    {
+      id: "tx-4",
+      action: "Challenge Proof: Risk Control Sprint (10/10)",
+      contract: "CBUSWS...TTFZ",
+      account: "GBLN5A...EZOY",
+      txHash: "09008f3635479d4bbfcd2efac2a9998c0740639254effcea6776fbcbfeb49f9e",
+      status: "Confirmed",
+      reward: "+25 REP XP",
+      time: "Stellar Ledger • 2h ago"
+    },
+    {
+      id: "tx-5",
+      action: "Challenge Proof: Rule Adherence Streak (5/5)",
+      contract: "CBUSWS...TTFZ",
+      account: "GBE3ES...EQMV",
+      txHash: "5531d88d8bfee13c03a9e16192f5b37f49089b0ffd0d75edc881d20c8353dd70",
+      status: "Confirmed",
+      reward: "+25 REP XP",
+      time: "Stellar Ledger • 3h ago"
+    },
+    {
+      id: "tx-6",
+      action: "Challenge Proof: Journal Clarity Quest (3/3)",
+      contract: "CBUSWS...TTFZ",
+      account: "GASFHL...GG2K",
+      txHash: "e5a0cdc45e3e386eaca1f446ec599552f8a9b97ab00402397e305751c3052530",
+      status: "Confirmed",
+      reward: "+25 REP XP",
+      time: "Stellar Ledger • 4h ago"
+    },
+    {
+      id: "tx-7",
+      action: "On-Chain Rep Milestone: +25 REP XP",
+      contract: "CBAMVU...XR5B",
+      account: "GASMR3...GI3Z",
+      txHash: "68eed25b8372e0bf912fb6fa13605058b5e8f9f970ad92350651112c71c2329f",
+      status: "Confirmed",
+      reward: "+25 REP XP",
+      time: "Stellar Ledger • 5h ago"
     },
   ];
 
