@@ -45,8 +45,8 @@ class Settings(BaseSettings):
     AI_PROVIDER: str = "openrouter"
     OPENROUTER_API_KEY: Optional[str] = None
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
-    LLM_MODEL: str = "minimax/minimax-m3:free"
-    VISION_MODEL: str = "minimax/minimax-m3:free"
+    LLM_MODEL: str = "dots-studio/dots-3-note-preview:free"
+    VISION_MODEL: str = "dots-studio/dots-3-note-preview:free"
 
     # External APIs
     COINGECKO_API_KEY: Optional[str] = None

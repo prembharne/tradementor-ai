@@ -194,7 +194,7 @@ export function ChartExplainer() {
         </div>
         <div className="flex items-center gap-2">
           <span className="badge badge-success flex items-center gap-1.5 font-bold font-mono text-xs">
-            <Cpu size={14} className="text-[#FF4D00]" /> Model: minimax/minimax-m3:free
+            <Cpu size={14} className="text-[#FF4D00]" /> Model: dots-studio/dots-3-note-preview:free
           </span>
         </div>
       </section>

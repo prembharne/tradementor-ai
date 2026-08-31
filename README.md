@@ -2,7 +2,7 @@
 
 [![Stellar Testnet](https://img.shields.io/badge/Stellar-Testnet%20Soroban-brightgreen?logo=stellar)](https://stellar.org)
 [![Vercel Deployment](https://img.shields.io/badge/Vercel-Live%20Demo-orange?logo=vercel)](https://frontend-kohl-rho-17.vercel.app)
-[![AI Engine](https://img.shields.io/badge/AI%20Engine-minimax%2Fminimax--m3%3Afree-blue)](https://openrouter.ai)
+[![AI Engine](https://img.shields.io/badge/AI%20Engine-dots--studio%2Fdots--3--note--preview%3Afree-blue)](https://openrouter.ai)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **TradeMentor AI** transforms trading performance by scoring and anchoring **discipline, process quality, and strategy adherence** directly to the **Stellar blockchain via Soroban smart contracts**, backed by deep multi-modal AI technical chart vision.
@@ -17,7 +17,7 @@
 | **Demo Video Link** | [YouTube Demo Walkthrough](https://youtu.be/TradeMentorAI-Demo) *(Replace with your recorded video)* |
 | **GitHub Repository** | [https://github.com/prembharne/tradementor-ai](https://github.com/prembharne/tradementor-ai) |
 | **Network** | Stellar Testnet (Soroban Preview / Protocol 21) |
-| **AI Model Engine** | `minimax/minimax-m3:free` via OpenRouter (Multi-Modal Vision & Reasoning) |
+| **AI Model Engine** | `dots-studio/dots-3-note-preview:free` via OpenRouter (Multi-Modal Vision & Reasoning) |
 
 ---
 
@@ -37,7 +37,7 @@
 ┌──────────────────────────────┐       ┌──────────────────────────────┐       ┌──────────────────────────────┐
 │       Frontend (SPA)         │       │     Backend FastAPI Core     │       │   Stellar Soroban Contracts  │
 │  • React 19 + TypeScript     │ <───> │  • Python 3.12 + FastAPI     │ <───> │  • Strategy Versioning (Rust)│
-│  • Vite + Kinetic Orange UI  │       │  • OpenRouter Minimax-M3 AI  │       │  • Challenge Proofs (Rust)   │
+│  • Vite + Kinetic Orange UI  │       │  • OpenRouter Dots-3 AI      │       │  • Challenge Proofs (Rust)   │
 │  • Freighter Wallet API      │       │  • CoinCap / Binance Feeds   │       │  • Reputation Registry (Rust)│
 └──────────────────────────────┘       └──────────────────────────────┘       └──────────────────────────────┘
 ```
@@ -49,7 +49,7 @@
 ### 1. ⛓️ On-Chain Strategy Versioning
 Traders register their trading playbook (market, timeframe, max risk %, minimum R:R, entry/exit checklists) on Soroban smart contracts. Every update creates an immutable `v1`, `v2` on-chain version hash with Freighter signature verification.
 
-### 2. 🧠 AI Process Evaluation & Coaching (Minimax M3)
+### 2. 🧠 AI Process Evaluation & Coaching (Dots-3 Engine)
 Every trade is evaluated against your specific playbook rules:
 - **Strategy Rule Adherence (40%)**: Compares notes & trigger reasons against entry/exit criteria.
 - **Risk Management (30%)**: Verifies position sizing and stop-loss honor.
