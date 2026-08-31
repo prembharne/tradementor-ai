@@ -1,78 +1,67 @@
-﻿from datetime import datetime
-from uuid import uuid4
-from fastapi import APIRouter
-from pydantic import BaseModel, Field
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.api.deps import get_current_active_user
+from app.db.session import get_db
+from app.models.user import User
+from app.schemas.strategy import StrategyCreate, StrategyUpdate, StrategyResponse
+from app.services import strategy_service
 
 router = APIRouter()
 
 
-class StrategyPayload(BaseModel):
-    name: str = Field(..., min_length=3)
-    market: str = "BTCUSDT"
-    timeframe: str = "15m"
-    risk_percent: float = 1.0
-    reward_ratio: float = 2.0
-    entry_rules: list[str] = []
-    exit_rules: list[str] = []
-    status: str = "published"
+@router.get("/", response_model=list[StrategyResponse])
+async def list_strategies(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+):
+    items = await strategy_service.list_strategies(db, current_user.id)
+    return [StrategyResponse.model_validate(s) for s in items]
 
 
-DEMO_STRATEGIES = [
-    {
-        "id": "strategy-london-breakout",
-        "name": "London Breakout Discipline",
-        "market": "BTCUSDT",
-        "timeframe": "15m",
-        "risk_percent": 1.0,
-        "reward_ratio": 2.2,
-        "version": 3,
-        "status": "published",
-        "on_chain_status": "ready_for_testnet_contract",
-    }
-]
+@router.post("/", response_model=StrategyResponse, status_code=status.HTTP_201_CREATED)
+async def create_strategy(
+    payload: StrategyCreate,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+):
+    strategy = await strategy_service.create_strategy(db, current_user.id, payload)
+    return StrategyResponse.model_validate(strategy)
 
 
-@router.get("/")
-async def list_strategies():
-    return {"items": DEMO_STRATEGIES, "count": len(DEMO_STRATEGIES)}
+@router.get("/{strategy_id}", response_model=StrategyResponse)
+async def get_strategy(
+    strategy_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+):
+    strategy = await strategy_service.get_strategy(db, strategy_id, current_user.id)
+    if not strategy:
+        raise HTTPException(status_code=404, detail="Strategy not found")
+    return StrategyResponse.model_validate(strategy)
 
 
-@router.post("/")
-async def create_strategy(payload: StrategyPayload):
-    strategy = payload.model_dump()
-    strategy.update(
-        {
-            "id": str(uuid4()),
-            "version": 1 if payload.status == "published" else 0,
-            "created_at": datetime.utcnow().isoformat(),
-            "on_chain_status": "pending_contract_deployment",
-        }
-    )
-    return strategy
+@router.patch("/{strategy_id}", response_model=StrategyResponse)
+async def update_strategy(
+    strategy_id: str,
+    payload: StrategyUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+):
+    strategy = await strategy_service.get_strategy(db, strategy_id, current_user.id)
+    if not strategy:
+        raise HTTPException(status_code=404, detail="Strategy not found")
+    strategy = await strategy_service.update_strategy(db, strategy, payload)
+    return StrategyResponse.model_validate(strategy)
 
 
-@router.get("/{strategy_id}")
-async def get_strategy(strategy_id: str):
-    return next((item for item in DEMO_STRATEGIES if item["id"] == strategy_id), {"id": strategy_id, "status": "not_found"})
-
-
-@router.patch("/{strategy_id}")
-async def update_strategy(strategy_id: str, payload: StrategyPayload):
-    strategy = payload.model_dump()
-    strategy.update({"id": strategy_id, "version": 2, "updated_at": datetime.utcnow().isoformat()})
-    return strategy
-
-
-@router.delete("/{strategy_id}")
-async def delete_strategy(strategy_id: str):
-    return {"id": strategy_id, "deleted": True}
-
-
-@router.post("/{strategy_id}/version")
-async def create_strategy_version(strategy_id: str):
-    return {
-        "strategy_id": strategy_id,
-        "version": 2,
-        "on_chain_status": "queued_for_soroban_submission",
-        "created_at": datetime.utcnow().isoformat(),
-    }
+@router.delete("/{strategy_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_strategy(
+    strategy_id: str,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+):
+    strategy = await strategy_service.get_strategy(db, strategy_id, current_user.id)
+    if not strategy:
+        raise HTTPException(status_code=404, detail="Strategy not found")
+    await strategy_service.delete_strategy(db, strategy)

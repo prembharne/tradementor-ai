@@ -75,10 +75,23 @@ async def login(
     user = result.scalar_one_or_none()
 
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials",
+        if password:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid credentials",
+            )
+        # Auto-provision wallet user
+        user = User(
+            wallet_address=wallet_address,
+            username=f"trader_{wallet_address[-6:]}" if len(wallet_address) >= 6 else "demo_trader",
+            is_active=True,
+            reputation_score=75,
+            total_trades=0,
+            completed_challenges=0,
         )
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
 
     if user.hashed_password and password:
         if not verify_password(password, user.hashed_password):

@@ -1,23 +1,50 @@
-﻿from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.api.deps import get_current_active_user
+from app.db.session import get_db
+from app.models.user import User
+from app.services import reputation_service
+
 
 router = APIRouter()
 
 
 @router.get("/")
-async def get_user_reputation():
-    return {"score": 68, "basis": "process_score + adherence + challenge_progress"}
+async def get_user_reputation(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+):
+    return await reputation_service.compute_reputation(db, current_user.id)
 
 
 @router.get("/leaderboard")
-async def get_reputation_leaderboard(limit: int = 10):
-    return {"items": [{"rank": 1, "wallet": "demo", "score": 68}], "limit": limit}
+async def get_reputation_leaderboard(
+    limit: int = Query(10, ge=1, le=100),
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(get_current_active_user),
+):
+    return {"items": await reputation_service.leaderboard(db, limit), "limit": limit}
 
 
 @router.get("/stats")
-async def get_reputation_stats():
-    return {"average_score": 82, "adherence_rate": 50, "completed_challenges": 0}
+async def get_reputation_stats(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user),
+):
+    rep = await reputation_service.compute_reputation(db, current_user.id)
+    return {
+        "average_score": rep["average_score"],
+        "adherence_rate": rep["adherence_rate"],
+        "completed_challenges": rep["challenge_bonus"],
+        "reputation": rep["score"],
+    }
 
 
 @router.get("/{user_id}")
-async def get_user_reputation_by_id(user_id: str):
-    return {"user_id": user_id, "score": 68}
+async def get_user_reputation_by_id(
+    user_id: str,
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(get_current_active_user),
+):
+    return await reputation_service.compute_reputation(db, user_id)
