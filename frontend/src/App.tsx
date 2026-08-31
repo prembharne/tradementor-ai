@@ -5,6 +5,7 @@ import { Layout } from "./components/layout/Layout";
 import { Dashboard } from "./pages/Dashboard";
 import { StrategyManager } from "./pages/StrategyManager";
 import { TradeJournal } from "./pages/TradeJournal";
+import { ChartExplainer } from "./pages/ChartExplainer";
 import { Challenges } from "./pages/Challenges";
 import { Reputation } from "./pages/Reputation";
 import { Settings } from "./pages/Settings";
@@ -33,6 +34,7 @@ function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="strategies" element={<StrategyManager />} />
         <Route path="journal" element={<TradeJournal />} />
+        <Route path="charts" element={<ChartExplainer />} />
         <Route path="challenges" element={<Challenges />} />
         <Route path="reputation" element={<Reputation />} />
         <Route path="settings" element={<Settings />} />

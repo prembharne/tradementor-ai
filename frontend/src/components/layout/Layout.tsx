@@ -1,8 +1,9 @@
-﻿import {
+import {
   BarChart3,
   BookOpenCheck,
   ClipboardList,
   Gauge,
+  LineChart,
   LogOut,
   Medal,
   PanelLeft,
@@ -18,13 +19,14 @@ const navItems = [
   { path: "/app/dashboard", label: "Dashboard", icon: Gauge },
   { path: "/app/strategies", label: "Strategies", icon: ClipboardList },
   { path: "/app/journal", label: "Journal", icon: BookOpenCheck },
+  { path: "/app/charts", label: "Chart Explainer", icon: LineChart },
   { path: "/app/challenges", label: "Challenges", icon: Trophy },
   { path: "/app/reputation", label: "Reputation", icon: Medal },
   { path: "/app/settings", label: "Settings", icon: Settings },
 ];
 
 export function Layout() {
-  const { publicKey, network, disconnect } = useWallet();
+  const { publicKey, network, balance, disconnect } = useWallet();
   const { metrics } = useTradeMentor();
   const location = useLocation();
   const currentPage = navItems.find((item) => item.path === location.pathname)?.label ?? "Dashboard";
@@ -39,13 +41,15 @@ export function Layout() {
               <BarChart3 size={19} />
             </span>
             <div>
-              <p className="text-lg font-black text-[var(--color-ink)]">TradeMentor AI</p>
-              <p className="text-xs font-bold text-[var(--color-muted)]">Discipline operating system</p>
+              <p className="font-archivo text-base font-black tracking-tight text-[var(--color-ink)]">
+                TradeMentor AI
+              </p>
+              <p className="text-xs text-[var(--color-muted)]">Discipline operating system</p>
             </div>
           </Link>
         </div>
 
-        <nav className="flex-1 space-y-1 p-4">
+        <nav className="flex-1 space-y-1.5 p-4">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -69,10 +73,15 @@ export function Layout() {
               <span className="badge badge-success">
                 <ShieldCheck size={14} /> {network ?? "TESTNET"}
               </span>
-              <span className="text-sm font-black text-[var(--color-primary)]">{metrics.reputation}</span>
+              <span className="badge badge-neutral font-bold text-xs">
+                {balance ?? "0.00 XLM"}
+              </span>
             </div>
             <p className="truncate text-sm font-black text-[var(--color-ink)]">{shortAddress}</p>
-            <p className="mt-1 text-xs text-[var(--color-muted)]">Wallet verified for local workspace</p>
+            <div className="mt-2 flex items-center justify-between text-xs text-[var(--color-muted)]">
+              <span>Discipline Rep:</span>
+              <span className="font-bold text-[var(--color-primary)]">{metrics.reputation} REP</span>
+            </div>
             <button type="button" className="btn btn-ghost mt-4 w-full justify-start" onClick={disconnect}>
               <LogOut size={16} /> Disconnect
             </button>
@@ -92,6 +101,9 @@ export function Layout() {
             </div>
           </div>
           <div className="hidden items-center gap-3 sm:flex">
+            <span className="badge badge-neutral font-bold text-[var(--color-ink)]">
+              {balance ?? "0.00 XLM"}
+            </span>
             <span className="badge badge-neutral">Avg score {metrics.averageScore}</span>
             <span className="badge badge-success">Rep {metrics.reputation}</span>
           </div>
