@@ -29,4 +29,11 @@ Thumbs.db
 
 # Local assistant/tooling state
 .agents/
-.claude/settings.local.json
+.claude/
+scratch/
+target/
+*.exe
+*.zip
+*.tar.gz
+*.mp4
+*.img
